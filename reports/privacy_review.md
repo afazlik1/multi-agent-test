@@ -18,11 +18,15 @@ No credential-pattern matches were found in scanned reachable Git blobs. No pers
 
 Generic operating-system requirements and local service addresses are retained because they describe how the framework works rather than identifying a particular computer. Repository ownership and account information remain visible through the hosting platform.
 
-## Outstanding before making the repository public
+## Branch-history cleanup completed
 
-**Current-file cleanup does not erase history.** Earlier commits retain real author names, a hostname-derived email, host platform metadata, and local paths. Three GitHub-managed PR refs also retain affected history. Repository visibility remains private.
+All four published branch histories have been rewritten with a generic author/committer identity and UTC timestamps. Historical host fingerprints, private paths in diagnostics, generated execution files, and local request text were removed. The original development/experiment commits and branching structure were preserved. Commit references in reports, JSON/CSV artifacts, and SQLite records were updated to their rewritten counterparts, with benchmark source snapshots and evaluation trajectories unchanged.
 
-The original project instructions prohibit force-pushing. A separate approval is required to rewrite/anonymize all four published branch histories and replace their remote refs. That operation changes commit IDs and requires coordinating existing worktrees, experiment provenance references, and the three PRs. GitHub-managed cached views and PR refs may need hosting-provider cleanup; rewriting branches alone is not a complete guarantee.
+The owner explicitly authorized this one-time rewrite. Remote replacement used exact branch-head leases; ordinary publication continues to prohibit force-pushing. Other clones must be re-cloned or carefully migrated to avoid reintroducing the original history. The private rollback copy is excluded from publication.
+
+## Remaining hosting-provider cleanup before public release
+
+**Rewriting branches does not guarantee deletion of GitHub caches or PR references.** Three pre-existing PRs reference affected history. Those refs and cached views require separate verification and may require hosting-provider cleanup. Repository visibility remains private. No support request or change of visibility was made automatically.
 
 See [GitHub's sensitive-data removal documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository). The provider decides whether a removal request meets its sensitive-data criteria.
 
