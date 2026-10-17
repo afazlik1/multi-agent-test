@@ -10,6 +10,8 @@ import threading
 import time
 import urllib.request
 
+from .privacy import sanitize_diagnostic
+
 MODEL = 'qwen3.8:27b-mtp-q8_0'
 CONTRACT = '''Write a complete Python module for an unknown deterministic 2D black-box MAXIMIZATION on [-5,5]^2.
 Use ONLY numpy and Python standard library. Never inspect files, network, processes, or objective implementation.
@@ -98,7 +100,7 @@ def execute(worktree, directory, ledger, worker, phase, shared, seed=42, timeout
             else: raise ValueError('Invalid worker protocol')
         process.wait(timeout=5)
         if process.returncode or result is None:
-            raise RuntimeError(process.stderr.read()[-6000:])
+            raise RuntimeError(sanitize_diagnostic(process.stderr.read()[-6000:]))
         rows=ledger.rows(worker,phase)
         if len(rows)!=150: raise RuntimeError(f'Worker made {len(rows)} NEW objective calls; must make exactly 150 NEW calls. len(shared)={len(shared)} imported observations do NOT count. Track calls separately or set observation target to budget+len(shared).')
         best=max(rows,key=lambda r:r[3])
@@ -108,3 +110,5 @@ def execute(worktree, directory, ledger, worker, phase, shared, seed=42, timeout
         process.wait()
         for stream in (process.stdin, process.stdout, process.stderr):
             stream.close()
+        runner.unlink(missing_ok=True)
+        policy.unlink(missing_ok=True)

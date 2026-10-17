@@ -10,12 +10,13 @@ import time
 from .agent_manager import author, execute
 from .coordinator import Ledger, guidance
 from .git_manager import git, publish
+from .privacy import sanitize_record
 
 WORKERS={'bayesian':('bayesian','agent/bayesian-optimization'), 'gradient':('gradient','agent/gradient-optimization'), 'particle_swarm':('particle-swarm','agent/particle-swarm-optimization')}
 
 def atomic(path,data):
     temporary=path.with_suffix('.tmp')
-    temporary.write_text(json.dumps(data,indent=2));temporary.replace(path)
+    temporary.write_text(json.dumps(sanitize_record(data),indent=2));temporary.replace(path)
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('--objective',required=True);parser.add_argument('--worktrees',default='../multi-agent-worktrees');parser.add_argument('--algorithm-source',choices=('ollama','reviewed'),default='ollama');args=parser.parse_args()
