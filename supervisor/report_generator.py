@@ -13,6 +13,14 @@ def generate(root,history,objective):
     for result in history:
         for row in result['trajectory']:
             if abs(objective(row['x'],row['y'])-row['value'])>1e-9: raise RuntimeError('Independent validation failed')
+    # Barrier-only metadata writes; evaluations remain exclusively owned by Ledger.
+    import sqlite3
+    db=sqlite3.connect(root/'experiments'/'experiments.sqlite')
+    db.execute('CREATE TABLE IF NOT EXISTS runs (experiment_id TEXT, worker TEXT, phase TEXT, branch TEXT, commit_sha TEXT, record_json TEXT, PRIMARY KEY(experiment_id,worker,phase))')
+    branches={'bayesian':'agent/bayesian-optimization','gradient':'agent/gradient-optimization','particle_swarm':'agent/particle-swarm-optimization'}
+    for result in history:
+        db.execute('INSERT OR REPLACE INTO runs VALUES (?,?,?,?,?,?)',('local-blackbox-001',result['worker'],result['phase'],branches[result['worker']],result['commit'],json.dumps(result)))
+    db.commit();db.close()
     fields=['worker','phase','best_x','best_y','best_value','evaluations','runtime','commit']
     with (root/'experiments'/'aggregated_results.csv').open('w') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields,extrasaction='ignore');writer.writeheader();writer.writerows(history)
@@ -29,6 +37,14 @@ def generate(root,history,objective):
     text+='\n## Supervisor observations\n\nIndependent findings were withheld until all three workers completed and pushed. The supervisor then shared measured best candidates, recommending local refinement for gradient ascent, surrogate candidate enrichment for Bayesian optimization, and partial swarm initialization near promising points. Workers authored a revised implementation through local Ollama for the collaborative phase.\n\n'
     for r in history:
         text+=f"### {r['worker']} / {r['phase']}\n\nCommit: `{r['commit']}`. Parameters and worker observations:\n\n```json\n{json.dumps(r['details'],indent=2)}\n```\n\n"
+    text+='## Evaluation efficiency and retained final performance\n\n'
+    text+='| Method | Retained best | Total calls | Optimization seconds | First call >= 15 | First call >= 19 |\n|---|---:|---:|---:|---:|---:|\n'
+    for name in sorted({r['worker'] for r in history}):
+        trials=[r for r in history if r['worker']==name]
+        values=[p['value'] for r in trials for p in r['trajectory']]
+        first=lambda threshold: next((i+1 for i,v in enumerate(values) if v>=threshold), 'not reached')
+        text+=f"| {name} | {max(values):.8f} | {len(values)} | {sum(r['runtime'] for r in trials):.3f} | {first(15)} | {first(19)} |\n"
+    text+='\nFixed thresholds support evaluation-efficiency comparisons without conflating model-generation time with optimization time. Local model authoring timing and token counts are retained in worker development/repair metadata. Phase two restarts each revised algorithm with shared candidates and the same seed rather than continuing in-memory optimizer state.\n\n'
     text+='## Final conclusions\n\nThis is one seeded run per method, not a statistical comparison. Improvements in the second phase coincide with sharing candidates, an additional budget, and code revisions; without equal-budget independent continuation controls they cannot be attributed causally to collaboration. Similar final values may indicate convergence to local peaks, but the objective error alone does not prove a worker was trapped.\n\nEvaluation efficiency is shown by the full best-so-far curves. Runtime covers optimization and evaluator IPC, excluding local model authoring and Git publication. Imported candidate values never count as worker observations unless re-evaluated. The benchmark reference maximum is used only here for final error calculations.\n\nRecommended next experiments: multiple paired seeds, independent 300-evaluation controls, fixed-code collaboration ablations, and acquisition/gradient/swarm parameter sweeps.\n'
     (reports/'optimization_report.md').write_text(text)
     for phase in ('independent','collaborative'):

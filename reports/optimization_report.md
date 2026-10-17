@@ -21,7 +21,7 @@ Independent findings were withheld until all three workers completed and pushed.
 
 ### bayesian / independent
 
-Commit: `ab2a918da854437373c892bb84b0e082b64bdbb6`. Parameters and worker observations:
+Commit: `af25cf2192e9542467c5a82a8b873316a8ff1706`. Parameters and worker observations:
 
 ```json
 {
@@ -1646,6 +1646,16 @@ Commit: `aa84eefa31ba5078e84e3612bf8b957030518c06`. Parameters and worker observ
   ]
 }
 ```
+
+## Evaluation efficiency and retained final performance
+
+| Method | Retained best | Total calls | Optimization seconds | First call >= 15 | First call >= 19 |
+|---|---:|---:|---:|---:|---:|
+| bayesian | 16.01073362 | 150 | 1.066 | 23 | not reached |
+| gradient | 16.02016881 | 150 | 0.272 | 11 | not reached |
+| particle_swarm | 18.28855195 | 150 | 0.273 | 30 | not reached |
+
+Fixed thresholds support evaluation-efficiency comparisons without conflating model-generation time with optimization time. Local model authoring timing and token counts are retained in worker development/repair metadata. Phase two restarts each revised algorithm with shared candidates and the same seed rather than continuing in-memory optimizer state.
 
 ## Final conclusions
 

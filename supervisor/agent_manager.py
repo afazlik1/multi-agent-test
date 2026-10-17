@@ -96,7 +96,7 @@ def execute(worktree, directory, ledger, worker, phase, shared, seed=42, timeout
         if process.returncode or result is None:
             raise RuntimeError(process.stderr.read()[-6000:])
         rows=ledger.rows(worker,phase)
-        if len(rows)!=150: raise RuntimeError('Worker must consume exactly 150 evaluations')
+        if len(rows)!=150: raise RuntimeError(f'Worker made {len(rows)} NEW objective calls; must make exactly 150 NEW calls. len(shared)={len(shared)} imported observations do NOT count. Track calls separately or set observation target to budget+len(shared).')
         best=max(rows,key=lambda r:r[3])
         return {'worker':worker,'phase':phase,'seed':seed,'best_x':best[1],'best_y':best[2],'best_value':best[3],'evaluations':len(rows),'runtime':max(r[4] for r in rows),'trajectory':[dict(zip(['evaluation','x','y','value','elapsed'],r)) for r in rows], 'details':result,'supervisor_instructions':shared}
     finally:

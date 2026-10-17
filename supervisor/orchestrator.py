@@ -22,6 +22,7 @@ def main():
     root=Path.cwd();worktrees=Path(args.worktrees).resolve();objective_path=Path(args.objective).resolve()
     if git(root,'branch','--show-current')!='main': raise RuntimeError('Supervisor must run on main')
     if objective_path.is_relative_to(root) or objective_path.is_relative_to(worktrees): raise RuntimeError('Hidden objective must be outside repositories')
+    if not any(objective_path.is_relative_to(Path(base)) for base in ('/Users','/private/tmp','/private/var/folders')): raise RuntimeError('Objective must reside under a sandbox-protected private directory')
     for name,(folder,branch) in WORKERS.items():
         if git(worktrees/folder,'branch','--show-current')!=branch: raise RuntimeError('Incorrect worktree')
         if not git(root,'ls-remote','origin','refs/heads/'+branch): raise RuntimeError('Worker branch not published')
@@ -54,6 +55,7 @@ def main():
                     except Exception as exc:
                         atomic(directory/f'preflight_failure_{attempt}.json',{'error':str(exc)})
                         if attempt==3: raise
+                        shutil.copy2(algorithm,directory/f'preflight_failed_{attempt}.py')
                         print('Repairing preflight',worker,phase,str(exc)[-250:],flush=True)
                         answer,metadata=author(worker,phase,algorithm.read_text(),shared,str(exc))
                         algorithm.write_text(answer['code'])

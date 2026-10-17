@@ -9,9 +9,11 @@ Requires macOS with `sandbox-exec`, Python 3.9+, NumPy, Matplotlib, Git SSH auth
 1. Install `requirements.txt` into your preferred Python environment.
 2. Fetch origin and create all three branches from the same main baseline: `agent/bayesian-optimization`, `agent/gradient-optimization`, `agent/particle-swarm-optimization`. Push them before launching workers.
 3. Create sibling worktrees under `../multi-agent-worktrees/{bayesian,gradient,particle-swarm}`. Existing branches and worktrees must be inspected and reused, never reset.
-4. Supply an external private Python module defining `black_box_function(x,y)` (supports NumPy arrays for supervisor plots). Keep it outside every repository and worktree.
+4. Supply an external private Python module defining `black_box_function(x,y)` (supports NumPy arrays for supervisor plots). Keep it outside every repository and worktree, in a private directory under `/Users` or `/private/tmp`, which the worker policy denies.
 5. From main run `python3 -m supervisor.orchestrator --objective /absolute/private/path/objective.py`.
 6. Run tests with `python3 -m unittest discover -s tests -v`.
+
+Inspect current progress without using a model with `python3 -m supervisor.status`.
 
 The objective implementation is deliberately absent from Git. Workers receive only their method, bounds, evaluation interface and budget. Independent runs finish before the supervisor shares measured candidates. Each phase permits exactly 150 evaluations per worker. SQLite transactions centrally enforce budgets. Every recorded point is recalculated before reports are published. Landscape plots and final reference errors are supervisor-only and never sent to worker models.
 
