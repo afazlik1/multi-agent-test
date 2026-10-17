@@ -26,7 +26,7 @@ The owner explicitly authorized this one-time rewrite. Remote replacement used e
 
 ## Remaining hosting-provider cleanup before public release
 
-**Rewriting branches does not guarantee deletion of GitHub caches or PR references.** Three pre-existing PRs reference affected history. Those refs and cached views require separate verification and may require hosting-provider cleanup. Repository visibility remains private. No support request or change of visibility was made automatically.
+**Rewriting branches does not guarantee deletion of GitHub caches or PR references.** Three pre-existing PRs reference affected history. Post-rewrite verification confirmed that the three PR head refs follow the sanitized branches, but the three old PR merge refs remain advertised. An authenticated GitHub API request still returned an old commit containing identifying author metadata. Hosting-provider removal is therefore still outstanding; branch anonymization alone has not purged all hosted copies. A private support-request draft was prepared but not submitted. Repository visibility remains private. No support request or change of visibility was made automatically.
 
 See [GitHub's sensitive-data removal documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository). The provider decides whether a removal request meets its sensitive-data criteria.
 
