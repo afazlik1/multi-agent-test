@@ -1820,7 +1820,16 @@
       "proposed_improvements": []
     },
     "supervisor_instructions": [],
-    "commit": "af25cf2192e9542467c5a82a8b873316a8ff1706"
+    "commit": "ab2a918da854437373c892bb84b0e082b64bdbb6",
+    "selected_source_sha256": "f3260d34559f86881035e4b0f01e5e2150e28f4631e632ca7425a355c5436604",
+    "algorithm_parameters": {
+      "min_init": 5,
+      "length_scale": 1.0,
+      "signal_var": 1.0,
+      "noise_var": 1e-06,
+      "beta": 2.0,
+      "n_candidates": 2000
+    }
   },
   {
     "worker": "gradient",
@@ -3643,7 +3652,13 @@
       "proposed_improvements": []
     },
     "supervisor_instructions": [],
-    "commit": "242efc03ad2b758ee506d3a6754fbcdd367634e4"
+    "commit": "242efc03ad2b758ee506d3a6754fbcdd367634e4",
+    "selected_source_sha256": "e2cbedde57c6352c8eef3baab84bb20b84fa199550e48213b8a5e3dd3369f461",
+    "supervisor_review": "Added boundary-safe difference probes in selected main code; exact full-trajectory replay passed.",
+    "algorithm_parameters": {
+      "h": 0.01,
+      "step": 0.1
+    }
   },
   {
     "worker": "particle_swarm",
@@ -4717,20 +4732,20 @@
       },
       "observations": [
         {
-          "x": 1.490099496831902,
-          "y": -3.0622444239525146,
+          "x": 2.7395604855596334,
+          "y": -0.6112156024794768,
           "value": 13.98035176251015,
           "source": "independent"
         },
         {
-          "x": 1.6727564548227827,
-          "y": -2.9415056507803548,
+          "x": 1.4774621386274083,
+          "y": -2.4486286721472537,
           "value": 7.836059801503014,
           "source": "independent"
         },
         {
-          "x": 4.871419918067221,
-          "y": -2.6380319434291897,
+          "x": 1.8675690319575198,
+          "y": -2.3733023386226844,
           "value": 14.048243026306263,
           "source": "independent"
         },
@@ -4741,46 +4756,46 @@
           "source": "independent"
         },
         {
-          "x": 2.0833966402181567,
-          "y": -2.7379898294327187,
+          "x": 1.357627060205814,
+          "y": -3.035492197361429,
           "value": 12.464842380957835,
           "source": "independent"
         },
         {
-          "x": 2.9209934020340684,
-          "y": -1.1044717893654523,
+          "x": 2.5667442024378366,
+          "y": -0.48932238224502367,
           "value": 13.770765994040554,
           "source": "independent"
         },
         {
-          "x": 1.1709890647613004,
-          "y": -1.4964047859584486,
+          "x": 1.0213632672272608,
+          "y": -1.7145028619094342,
           "value": 10.076959799848531,
           "source": "independent"
         },
         {
-          "x": 3.533630651173911,
-          "y": -2.5647251744373802,
+          "x": -0.0474918595121514,
+          "y": -3.604590841485935,
           "value": 13.559906079253892,
           "source": "independent"
         },
         {
-          "x": 2.114144768148539,
-          "y": -5.0,
+          "x": 1.569107479987347,
+          "y": -2.1767512261754147,
           "value": 14.160453020873259,
           "source": "independent"
         },
         {
-          "x": 1.6003108881251242,
-          "y": -2.7764821024226376,
+          "x": 1.751617220710806,
+          "y": -2.3782671087103484,
           "value": 18.2885519478321,
           "source": "independent"
         }
       ],
       "proposed_improvements": [
         {
-          "x": 1.6003108881251242,
-          "y": -2.7764821024226376,
+          "x": 1.751617220710806,
+          "y": -2.3782671087103484,
           "value": 18.2885519478321
         },
         {
@@ -4789,14 +4804,22 @@
           "value": 16.372276172968085
         },
         {
-          "x": 2.114144768148539,
-          "y": -5.0,
+          "x": 1.569107479987347,
+          "y": -2.1767512261754147,
           "value": 14.160453020873259
         }
       ]
     },
     "supervisor_instructions": [],
-    "commit": "aa84eefa31ba5078e84e3612bf8b957030518c06"
+    "commit": "aa84eefa31ba5078e84e3612bf8b957030518c06",
+    "selected_source_sha256": "79813cb02be9c75128a8f22d74245a74f773facfcdebfb5bb589c25f1f33ff74",
+    "supervisor_review": "Corrected personal-best summary coordinates in selected main code; exact full-trajectory replay passed. Original raw summaries remain in the experiment commit on the worker branch.",
+    "algorithm_parameters": {
+      "n_particles": 10,
+      "w": 0.9,
+      "c1": 1.5,
+      "c2": 1.5
+    }
   },
   {
     "worker": "bayesian",
@@ -6653,7 +6676,16 @@
         "source": "bayesian"
       }
     ],
-    "commit": "e5926f8521d9a1cf4d62ac1310f900db5d5d9cc0"
+    "commit": "e5926f8521d9a1cf4d62ac1310f900db5d5d9cc0",
+    "selected_source_sha256": "e8c9f1754aa7b5a0f90ac881a712791404e9a396f3ff37761bbc5550a2ebc3fe",
+    "algorithm_parameters": {
+      "n_init": 5,
+      "length_scale": 1.0,
+      "signal_var": 1.0,
+      "noise_var": 1e-06,
+      "beta": 2.0,
+      "n_candidates": 2000
+    }
   },
   {
     "worker": "gradient",
@@ -8495,7 +8527,13 @@
         "source": "bayesian"
       }
     ],
-    "commit": "30e6d59803424782b5b08c3d3e7c0301a848f4ef"
+    "commit": "30e6d59803424782b5b08c3d3e7c0301a848f4ef",
+    "selected_source_sha256": "51cd22e4c55c672d83204677ed228cfe609845ca923b80be983f588210023889",
+    "supervisor_review": "Added boundary-safe difference probes in selected main code; exact full-trajectory replay passed.",
+    "algorithm_parameters": {
+      "h": 0.01,
+      "step": 0.1
+    }
   },
   {
     "worker": "particle_swarm",
@@ -9569,80 +9607,80 @@
       },
       "observations": [
         {
-          "x": 1.7146399781439987,
-          "y": -2.448567026100601,
+          "x": 1.7750866774902319,
+          "y": -2.2748646310976604,
           "value": 18.768710577752124,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 2.069655920378228,
-          "y": -0.8061233450608833,
+          "x": 2.1605394231742188,
+          "y": -3.617747127878139,
           "value": 16.991149260368484,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 1.4975663826211745,
-          "y": 1.5206191769708708,
+          "x": 2.650333507415592,
+          "y": -0.5478574357449784,
           "value": 16.01073361560941,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 1.3532456375706796,
-          "y": -1.6783059630692418,
+          "x": 0.9734720972369715,
+          "y": -1.9017031548533692,
           "value": 14.050273272936304,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 0.7839927612114692,
-          "y": -2.5721585670519334,
+          "x": 0.35742510645769743,
+          "y": -5.0,
           "value": 8.319155107977426,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 4.1818755520819835,
-          "y": -1.7171936891790205,
+          "x": -1.987398503661964,
+          "y": -2.5678996203798494,
           "value": 4.131425980352816,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 1.9878415840375527,
-          "y": -1.0801054371123844,
+          "x": 1.8426031682855024,
+          "y": -3.337694692779606,
           "value": -2.8686929599705753,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 2.7704703755099733,
-          "y": -2.1099351300413356,
+          "x": 0.8671790763870466,
+          "y": -1.7295121847149513,
           "value": 17.01591098860983,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 2.03528747625983,
-          "y": -4.529019432233735,
+          "x": 2.3965887473032814,
+          "y": -5.0,
           "value": 10.27232560266744,
-          "source": "independent"
+          "source": "collaborative"
         },
         {
-          "x": 1.550040242503794,
-          "y": -1.8881146598188283,
+          "x": 1.7606160926610717,
+          "y": -2.145794898393767,
           "value": 15.011031021867499,
-          "source": "independent"
+          "source": "collaborative"
         }
       ],
       "proposed_improvements": [
         {
-          "x": 1.7146399781439987,
-          "y": -2.448567026100601,
+          "x": 1.7750866774902319,
+          "y": -2.2748646310976604,
           "value": 18.768710577752124
         },
         {
-          "x": 2.7704703755099733,
-          "y": -2.1099351300413356,
+          "x": 0.8671790763870466,
+          "y": -1.7295121847149513,
           "value": 17.01591098860983
         },
         {
-          "x": 2.069655920378228,
-          "y": -0.8061233450608833,
+          "x": 2.1605394231742188,
+          "y": -3.617747127878139,
           "value": 16.991149260368484
         }
       ]
@@ -9667,6 +9705,14 @@
         "source": "bayesian"
       }
     ],
-    "commit": "92cf30eb1d1df2074a9190722913aab39ba2cb0d"
+    "commit": "92cf30eb1d1df2074a9190722913aab39ba2cb0d",
+    "selected_source_sha256": "87cfad644d7a34062dc697b385e5c63b34897f4c8b124191112d9545f638701e",
+    "supervisor_review": "Corrected personal-best summary coordinates in selected main code; exact full-trajectory replay passed. Original raw summaries remain in the experiment commit on the worker branch.",
+    "algorithm_parameters": {
+      "n_particles": 10,
+      "w": 0.9,
+      "c1": 1.5,
+      "c2": 1.5
+    }
   }
 ]

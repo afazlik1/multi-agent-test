@@ -1818,5 +1818,8 @@
     ],
     "proposed_improvements": []
   },
-  "supervisor_instructions": []
+  "supervisor_instructions": [],
+  "commit": "242efc03ad2b758ee506d3a6754fbcdd367634e4",
+  "selected_source_sha256": "e2cbedde57c6352c8eef3baab84bb20b84fa199550e48213b8a5e3dd3369f461",
+  "supervisor_review": "Added boundary-safe difference probes in selected main code; exact full-trajectory replay passed."
 }

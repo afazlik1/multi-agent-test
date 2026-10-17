@@ -16,14 +16,18 @@ def optimize(evaluate, budget, seed, shared):
         return val
     
     def gradient(x, y, h):
-        fxp = eval_point(x + h, y)
-        fxm = eval_point(x - h, y)
-        fyp = eval_point(x, y + h)
-        fym = eval_point(x, y - h)
+        xp, xm = min(5.0, x + h), max(-5.0, x - h)
+        yp, ym = min(5.0, y + h), max(-5.0, y - h)
+        fxp = eval_point(xp, y)
+        fxm = eval_point(xm, y)
+        fyp = eval_point(x, yp)
+        fym = eval_point(x, ym)
         if fxp is None or fxm is None or fyp is None or fym is None:
             return None
-        gx = (fxp - fxm) / (2 * h)
-        gy = (fyp - fym) / (2 * h)
+        dx = 2 * h if -5 <= x - h and x + h <= 5 else xp - xm
+        dy = 2 * h if -5 <= y - h and y + h <= 5 else yp - ym
+        gx = (fxp - fxm) / dx
+        gy = (fyp - fym) / dy
         return np.array([gx, gy])
     
     def line_search(x, y, fx, grad, step):

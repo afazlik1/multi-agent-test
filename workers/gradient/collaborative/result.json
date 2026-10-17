@@ -1837,5 +1837,8 @@
       "value": 16.01073361560941,
       "source": "bayesian"
     }
-  ]
+  ],
+  "commit": "30e6d59803424782b5b08c3d3e7c0301a848f4ef",
+  "selected_source_sha256": "51cd22e4c55c672d83204677ed228cfe609845ca923b80be983f588210023889",
+  "supervisor_review": "Added boundary-safe difference probes in selected main code; exact full-trajectory replay passed."
 }

@@ -68,10 +68,10 @@ def optimize(evaluate, budget, seed, shared):
     observations = []
     for i in range(n_particles):
         observations.append({
-            'x': float(X[i, 0]),
-            'y': float(X[i, 1]),
+            'x': float(pbest[i, 0]),
+            'y': float(pbest[i, 1]),
             'value': float(pbest_val[i]),
-            'source': 'independent'
+            'source': 'collaborative' if shared else 'independent'
         })
     
     # Proposed improvements: top 3 particles
@@ -79,8 +79,8 @@ def optimize(evaluate, budget, seed, shared):
     proposed_improvements = []
     for idx in sorted_indices[:3]:
         proposed_improvements.append({
-            'x': float(X[idx, 0]),
-            'y': float(X[idx, 1]),
+            'x': float(pbest[idx, 0]),
+            'y': float(pbest[idx, 1]),
             'value': float(pbest_val[idx])
         })
     

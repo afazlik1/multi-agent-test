@@ -1852,5 +1852,7 @@
       "value": 16.01073361560941,
       "source": "bayesian"
     }
-  ]
+  ],
+  "commit": "e5926f8521d9a1cf4d62ac1310f900db5d5d9cc0",
+  "selected_source_sha256": "e8c9f1754aa7b5a0f90ac881a712791404e9a396f3ff37761bbc5550a2ebc3fe"
 }
