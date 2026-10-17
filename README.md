@@ -32,3 +32,17 @@ For other objectives, use a new experiment ledger and worktrees/run directory to
 ## Automated cloud supervisor integration
 
 The supported integration is `codex exec --json` ([official non-interactive documentation](https://developers.openai.com/codex/noninteractive)). This run's supervisor is the current Codex session; the reusable adapter in `supervisor/cloud_supervisor.py` is opt-in and never activates paid API usage automatically. Authenticate using your existing Codex account; assess billing before enabling API-key authentication.
+
+## Reviewed algorithm improvements
+
+The current reusable implementations are `workers/bayesian/algorithm.py`, `workers/gradient/algorithm.py`, and `workers/particle_swarm/algorithm.py`. Historical `independent/` and `collaborative/` code, results, and reports continue to describe the original experiment.
+
+- **Bayesian:** normalize observed values; fit separate kernel length scales for each axis with a bounded marginal-likelihood search every 12 new calls. A maximum of 48 training points keeps fitting cost bounded. Diagnostics record selected scales, jitter, and fit scores.
+- **Gradient:** cap each restart at 30 objective calls, including finite differences and backtracking. Restart on stagnation or a stationary gradient; alternate promising shared candidates with independent random starts.
+- **Swarm:** reduce inertia linearly from 0.9 to 0.4 over post-initialization evaluations, cap velocities at 2, and retain random exploration when seeding from shared points.
+
+All three retain the `optimize(evaluate, budget, seed, shared)` interface, support small and zero budgets, and report only newly measured observations as their own. Shared values never consume the new-call budget.
+
+Local Ollama authoring now receives these reviewed baselines and explicit improvement requirements. For a fresh experiment, `--algorithm-source reviewed` runs the checked-in implementations directly through the same sandbox/evaluator without a model-authoring call. The default remains `--algorithm-source ollama`. Reviewed mode refuses to replace a different existing phase implementation; archive prior experiment code/results and use fresh tracking/worktrees for a new experiment rather than repurposing the completed 900-evaluation run. Reviewed code failures stop without an automatic model rewrite.
+
+Validation includes synthetic fixtures, exact budgets, restart limits, inertia endpoints, kernel adaptation, determinism, and execution through the restricted interface. The previous benchmark is preserved; these code changes do not establish a new benchmark ranking.

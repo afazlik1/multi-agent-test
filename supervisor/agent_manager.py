@@ -19,15 +19,19 @@ shared is [] in independent phase; in collaborative phase it is a list of dicts 
 You may evaluate shared candidates (counts against budget), but do not treat imported values as your own evaluations.
 Return a JSON-serializable dict with parameters, observations, proposed_improvements.
 No printing. No main guard. No scipy/sklearn. No objective formula. Use a seeded numpy RNG.
-Fit the entire implementation in at most 100 lines. Do not include long comments or deliberation. Count NEW evaluate calls separately from shared training points. Ensure GP variance uses sum(W*W, axis=0) for W=solve(L,K_cross.T); kernel diagonal must match covariance amplitude. Respond JSON with exactly {"code":"...", "rationale":"..."}.
+Fit the entire implementation in at most 220 lines. Do not include long comments or deliberation. Count NEW evaluate calls separately from shared training points. Ensure GP variance uses sum(W*W, axis=0) for W=solve(L,K_cross.T); kernel diagonal must match covariance amplitude. Respond JSON with exactly {"code":"...", "rationale":"..."}.
 '''
 
 def author(method, phase, previous=None, shared=None, feedback=None):
     tasks = {
-        'bayesian': 'Implement genuine Bayesian optimization with a Gaussian Process surrogate, RBF or Matern kernel and UCB or expected improvement acquisition. Use numpy linear algebra, candidate sampling, stable jitter; avoid expensive hyperparameter fitting. Include exploration.',
-        'gradient': 'Implement multi-start numerical gradient ascent with central differences and bounded backtracking. Every finite difference and line-search call counts. Use small adaptive steps and multiple starts to handle local optima.',
-        'particle_swarm': 'Implement genuine particle swarm optimization with velocities, personal best and global best, inertia and cognitive/social terms. Keep a moderate population and clip boundaries.'
+        'bayesian': 'Implement genuine Bayesian optimization with a Gaussian Process surrogate, RBF or Matern kernel and UCB or expected improvement acquisition. Use numpy linear algebra, candidate sampling, stable jitter; avoid expensive hyperparameter fitting. Include exploration. Normalize observations and adapt bounded anisotropic kernel length scales periodically using marginal likelihood; report selected scales.',
+        'gradient': 'Implement multi-start numerical gradient ascent with central differences and bounded backtracking. Every finite difference and line-search call counts. Use small adaptive steps and multiple starts to handle local optima. Cap EVERY restart at 30 new calls including finite differences and line search, restart on stagnation, and reserve random starts after shared candidates.',
+        'particle_swarm': 'Implement genuine particle swarm optimization with velocities, personal best and global best, inertia and cognitive/social terms. Keep a moderate population and clip boundaries. Decline inertia linearly from 0.9 to 0.4 across velocity updates, cap velocities, and report the inertia schedule.'
     }
+    if previous is None:
+        baseline=Path(__file__).resolve().parent.parent/'workers'/method/'algorithm.py'
+        if baseline.exists():
+            previous=baseline.read_text()
     prompt = CONTRACT + '\n' + tasks[method] + '\nPhase: ' + phase
     if previous:
         prompt += '\nImprove your previous implementation:\n' + previous

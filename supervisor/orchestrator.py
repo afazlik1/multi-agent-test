@@ -18,7 +18,7 @@ def atomic(path,data):
     temporary.write_text(json.dumps(data,indent=2));temporary.replace(path)
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--objective',required=True);parser.add_argument('--worktrees',default='../multi-agent-worktrees');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--objective',required=True);parser.add_argument('--worktrees',default='../multi-agent-worktrees');parser.add_argument('--algorithm-source',choices=('ollama','reviewed'),default='ollama');args=parser.parse_args()
     root=Path.cwd();worktrees=Path(args.worktrees).resolve();objective_path=Path(args.objective).resolve()
     if git(root,'branch','--show-current')!='main': raise RuntimeError('Supervisor must run on main')
     if objective_path.is_relative_to(root) or objective_path.is_relative_to(worktrees): raise RuntimeError('Hidden objective must be outside repositories')
@@ -35,6 +35,9 @@ def main():
         # Serialize model authoring to bound unified-memory use; experiment processes run in parallel.
         for worker,(folder,branch) in WORKERS.items():
             wt=worktrees/folder;directory=wt/'workers'/worker/phase;directory.mkdir(parents=True,exist_ok=True)
+            if args.algorithm_source=='reviewed':
+                from .reviewed_algorithms import stage_reviewed
+                stage_reviewed(root,worker,phase,directory)
             result_path=directory/'result.json'
             if result_path.exists():
                 result=json.loads(result_path.read_text());publish(wt,branch,['workers/'+worker+'/'+phase],phase+' '+worker+' results');result['commit']=git(wt,'log','-1','--format=%H','--','workers/'+worker+'/'+phase+'/result.json');history.append(result);continue
@@ -54,7 +57,7 @@ def main():
                         break
                     except Exception as exc:
                         atomic(directory/f'preflight_failure_{attempt}.json',{'error':str(exc)})
-                        if attempt==3: raise
+                        if args.algorithm_source=='reviewed' or attempt==3: raise
                         shutil.copy2(algorithm,directory/f'preflight_failed_{attempt}.py')
                         print('Repairing preflight',worker,phase,str(exc)[-250:],flush=True)
                         answer,metadata=author(worker,phase,algorithm.read_text(),shared,str(exc))
@@ -69,7 +72,7 @@ def main():
             except Exception as exc:
                 atomic(directory/'failure.json',{'error':str(exc),'phase':phase})
                 # Never silently restart a spent budget with a different algorithm.
-                if ledger.rows(worker,phase): raise
+                if args.algorithm_source=='reviewed' or ledger.rows(worker,phase): raise
                 answer,metadata=author(worker,phase,(directory/'algorithm.py').read_text(),shared,str(exc))
                 (directory/'algorithm.py').write_text(answer['code'])
                 atomic(directory/'repair.json',{'rationale':answer['rationale'],'ollama':metadata})
