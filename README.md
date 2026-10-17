@@ -2,6 +2,58 @@
 
 A cloud Codex supervisor coordinates three local Ollama workers: Gaussian-process Bayesian optimization, numerical gradient ascent, and particle swarm optimization. Each worker independently authors code with Ollama, executes it in its assigned macOS sandbox/worktree, and publishes measured milestones through a branch-scoped Git adapter. No additional paid API is activated.
 
+## System design
+
+```mermaid
+flowchart TB
+    S["Cloud Codex supervisor<br/>Reviews findings and directs experiments"]
+
+    subgraph LOCAL["Local machine"]
+        C["Python controller<br/>Tasks, phase barriers, recovery, and resource limits"]
+        O["Ollama<br/>Separate worker prompts and code generation"]
+
+        subgraph WORKERS["Parallel optimization processes — separate sandboxes and worktrees"]
+            B["Bayesian optimization<br/>agent/bayesian-optimization"]
+            G["Numerical gradient ascent<br/>agent/gradient-optimization"]
+            P["Particle swarm optimization<br/>agent/particle-swarm-optimization"]
+        end
+
+        E["Controlled evaluation interface<br/>Bounds checks and evaluation budgets"]
+        H["Private objective<br/>Outside all repositories and worktrees"]
+        T[("Central SQLite ledger<br/>Evaluations and experiment state")]
+        A["Trusted Git adapter<br/>Commits and pushes only the assigned branch"]
+        R["Supervisor review<br/>Validate values, test code, generate reports and plots"]
+
+        C -->|"Method, previous code, and permitted shared findings"| O
+        O -->|"Generated code"| B
+        O -->|"Generated code"| G
+        O -->|"Generated code"| P
+        C -->|"Launch and collect results"| WORKERS
+        B <-->|"Coordinates / measured values"| E
+        G <-->|"Coordinates / measured values"| E
+        P <-->|"Coordinates / measured values"| E
+        E -->|"Evaluate privately"| H
+        E -->|"Record every worker evaluation"| T
+        WORKERS -->|"Code and results"| A
+        T --> R
+        R -->|"Selected candidates for collaboration"| C
+    end
+
+    subgraph GH["GitHub repository"]
+        WB["Three worker branches<br/>Independent development history"]
+        MAIN["main<br/>Validated implementations, consolidated results, reports, and plots"]
+    end
+
+    S <-->|"Instructions and progress summaries"| C
+    A --> WB
+    WB -->|"Fetch and inspect"| R
+    R -->|"Publish validated artifacts"| MAIN
+```
+
+**Collaboration passes through the controller.** Each worker first spends 150 evaluations independently. After all three finish, the controller shares their measured best candidates with every worker for a further 150 evaluations each. Workers do not message one another directly or receive the hidden objective source. Ollama authors code; the sandboxed Python processes perform the optimization. Reviewed mode runs the checked-in implementations directly, bypassing Ollama code generation.
+
+The cloud supervisor is the current Codex session. The optional CLI bridge supports automated supervisor requests; the local controller runs the experiment phases.
+
 ## Reproduce
 
 Requires macOS with `sandbox-exec`, Python 3.9+, NumPy, Matplotlib, Git SSH authentication, and Ollama serving `qwen3.8:27b-mtp-q8_0` on localhost:11434.
