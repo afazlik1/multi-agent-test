@@ -1,0 +1,10 @@
+experiment_id: local-blackbox-001
+bounds: [-5, 5]
+seed: 42
+independent_budget: 150
+collaborative_budget: 150
+ollama_model: qwen3.8:27b-mtp-q8_0
+model_authoring_concurrency: 1
+optimization_concurrency: 3
+objective_source: external_private_module
+tracking: sqlite
