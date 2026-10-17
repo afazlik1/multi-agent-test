@@ -1,0 +1,30 @@
+{
+  "rationale": "The implementation initializes the particle swarm using the provided shared candidates to leverage prior knowledge, ensuring the search starts near known high-value regions. It then proceeds with standard PSO dynamics (inertia, cognitive, social components) to explore the space further within the remaining budget. The code strictly adheres to the budget constraint, uses only numpy and standard libraries, and returns the required JSON-serializable structure.",
+  "ollama": {
+    "model": "qwen3.8:27b-mtp-q8_0",
+    "total_duration": 37610579916,
+    "prompt_eval_count": 1296,
+    "eval_count": 976
+  },
+  "phase": "collaborative",
+  "guidance": [
+    {
+      "x": 1.751617220710806,
+      "y": -2.3782671087103484,
+      "value": 18.2885519478321,
+      "source": "particle_swarm"
+    },
+    {
+      "x": 2.6540126406725064,
+      "y": -0.5536906999850462,
+      "value": 16.02016880681598,
+      "source": "gradient"
+    },
+    {
+      "x": 2.650333507415592,
+      "y": -0.5478574357449784,
+      "value": 16.01073361560941,
+      "source": "bayesian"
+    }
+  ]
+}
