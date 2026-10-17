@@ -46,3 +46,11 @@ All three retain the `optimize(evaluate, budget, seed, shared)` interface, suppo
 Local Ollama authoring now receives these reviewed baselines and explicit improvement requirements. For a fresh experiment, `--algorithm-source reviewed` runs the checked-in implementations directly through the same sandbox/evaluator without a model-authoring call. The default remains `--algorithm-source ollama`. Reviewed mode refuses to replace a different existing phase implementation; archive prior experiment code/results and use fresh tracking/worktrees for a new experiment rather than repurposing the completed 900-evaluation run. Reviewed code failures stop without an automatic model rewrite.
 
 Validation includes synthetic fixtures, exact budgets, restart limits, inertia endpoints, kernel adaptation, determinism, and execution through the restricted interface. The previous benchmark is preserved; these code changes do not establish a new benchmark ranking.
+
+## Benchmark the reviewed versions without replacing the original run
+
+Run `python3 -m supervisor.benchmark_improvements --objective /absolute/private/path/objective.py --run-id improved-seed42-v1` from main. This uses the existing assigned worker branches/worktrees, separate `workers/<method>/runs/<run-id>/<phase>` directories, and an isolated ledger under `experiments/runs/<run-id>/`. Each method gets 150 independent and 150 collaborative calls with seed 42. The collaboration candidates come exclusively from that new independent phase. Source hashes and the objective hash guard against incompatible resumption. Completed evaluations replay from the new ledger on restart.
+
+The runner pushes each worker's results after each phase and creates a comparison report, CSV/JSON, and convergence plot on main's filesystem for review/publication. It does not rewrite the original run or automatically push main. Reusing a run ID resumes that run; a new ID starts a new evaluation budget.
+
+The first reviewed benchmark is in `experiments/runs/improved-seed42-v1/`. All three final best values regressed versus the original run. These changes passed correctness tests but have not demonstrated better final benchmark performance.

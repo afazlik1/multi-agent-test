@@ -1,0 +1,7 @@
+{
+  "source": "supervisor-reviewed",
+  "phase": "independent",
+  "baseline": "workers/particle_swarm/algorithm.py",
+  "source_sha256": "ddba88b0eee7bcba4b759cd2cec768df375c83e06ef425a98ec1ba1abda3e127",
+  "rationale": "Adaptive Bayesian scales, bounded gradient restarts, or declining swarm inertia."
+}

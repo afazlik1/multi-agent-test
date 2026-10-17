@@ -1,0 +1,68 @@
+[
+  {
+    "worker": "bayesian",
+    "original": {
+      "best_x": 1.7000512721899985,
+      "best_y": -2.3183561222847446,
+      "best_value": 19.933198829687907,
+      "evaluations": 300,
+      "runtime": 1.7569161670000142,
+      "first_19": 156,
+      "first_19_99": null
+    },
+    "improved": {
+      "best_x": 1.2592363866194358,
+      "best_y": -3.185571194221426,
+      "best_value": 18.715074066372484,
+      "evaluations": 300,
+      "runtime": 0.81281675,
+      "first_19": null,
+      "first_19_99": null
+    },
+    "change": -1.2181247633154229
+  },
+  {
+    "worker": "gradient",
+    "original": {
+      "best_x": 1.7000000219116012,
+      "best_y": -2.300000041318224,
+      "best_value": 19.999999999999567,
+      "evaluations": 300,
+      "runtime": 0.5463311249999947,
+      "first_19": 161,
+      "first_19_99": 175
+    },
+    "improved": {
+      "best_x": 1.232630015915704,
+      "best_y": -3.176741864074902,
+      "best_value": 18.984063374936998,
+      "evaluations": 300,
+      "runtime": 0.5788652089999999,
+      "first_19": null,
+      "first_19_99": null
+    },
+    "change": -1.0159366250625688
+  },
+  {
+    "worker": "particle_swarm",
+    "original": {
+      "best_x": 1.7750866774902319,
+      "best_y": -2.2748646310976604,
+      "best_value": 18.768710577752124,
+      "evaluations": 300,
+      "runtime": 0.5467574590000055,
+      "first_19": null,
+      "first_19_99": null
+    },
+    "improved": {
+      "best_x": 1.2592363866194358,
+      "best_y": -3.185571194221426,
+      "best_value": 18.715074066372484,
+      "evaluations": 300,
+      "runtime": 0.5776856659999998,
+      "first_19": null,
+      "first_19_99": null
+    },
+    "change": -0.053636511379639984
+  }
+]

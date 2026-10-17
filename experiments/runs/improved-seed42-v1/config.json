@@ -1,0 +1,12 @@
+{
+  "experiment_id": "improved-seed42-v1",
+  "seed": 42,
+  "budget_per_phase": 150,
+  "source_sha256": {
+    "bayesian": "be25de96ebb1a0be7602ad4aaeac13093735a04ebb56a37c2f1b5e9c7e38b221",
+    "gradient": "97a0e665d802e06c06e6e8caf6949b90afa27977b067489fa017cee5eafd57e8",
+    "particle_swarm": "ddba88b0eee7bcba4b759cd2cec768df375c83e06ef425a98ec1ba1abda3e127"
+  },
+  "objective_sha256": "9ea07c72286912957a9918916f9777abdad2f9b1ee8b0af22b52ee2064ddfbf5",
+  "baseline_history_sha256": "67a180cbfcff36859a8a4b460faebf6eef121d937c475eba1a0366e358dc068e"
+}
