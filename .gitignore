@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+*.sqlite-wal
+*.sqlite-shm
+.runtime/
+
+# Local requests, credentials, and generated machine-specific execution files
+prompt.txt
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+workers/**/runner.py
+workers/**/sandbox.sb
