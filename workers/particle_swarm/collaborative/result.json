@@ -1170,5 +1170,11 @@
   ],
   "commit": "92cf30eb1d1df2074a9190722913aab39ba2cb0d",
   "selected_source_sha256": "87cfad644d7a34062dc697b385e5c63b34897f4c8b124191112d9545f638701e",
-  "supervisor_review": "Corrected personal-best summary coordinates in selected main code; exact full-trajectory replay passed. Original raw summaries remain in the experiment commit on the worker branch."
+  "supervisor_review": "Selected code passed exact full-trajectory replay without new objective calls. Main adds reviewed swarm-summary and gradient-boundary fixes where applicable; original worker reports remain in their branch commits.",
+  "algorithm_parameters": {
+    "n_particles": 10,
+    "w": 0.9,
+    "c1": 1.5,
+    "c2": 1.5
+  }
 }

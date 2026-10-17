@@ -93,6 +93,9 @@ def main():
             destination=target/phase;destination.mkdir(exist_ok=True)
             for name in ('algorithm.py','result.json','development.json'):
                 shutil.copy2(source/phase/name,destination/name)
+    from .validation import validate_selection
+    validate_selection(root,history)
+    generate(root,history,module.black_box_function)
     subprocess.run(['python3','-m','unittest','discover','-s','tests','-v'],check=True)
     publish(root,'main',['workers','reports','visualizations','experiments'], 'Final multi-agent optimization results and report')
     print('COMPLETE',flush=True)

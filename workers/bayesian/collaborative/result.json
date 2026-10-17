@@ -1854,5 +1854,14 @@
     }
   ],
   "commit": "e5926f8521d9a1cf4d62ac1310f900db5d5d9cc0",
-  "selected_source_sha256": "e8c9f1754aa7b5a0f90ac881a712791404e9a396f3ff37761bbc5550a2ebc3fe"
+  "selected_source_sha256": "e8c9f1754aa7b5a0f90ac881a712791404e9a396f3ff37761bbc5550a2ebc3fe",
+  "algorithm_parameters": {
+    "n_init": 5,
+    "length_scale": 1.0,
+    "signal_var": 1.0,
+    "noise_var": 1e-06,
+    "beta": 2.0,
+    "n_candidates": 2000
+  },
+  "supervisor_review": "Selected code passed exact full-trajectory replay without new objective calls. Main adds reviewed swarm-summary and gradient-boundary fixes where applicable; original worker reports remain in their branch commits."
 }

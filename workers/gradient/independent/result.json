@@ -1821,5 +1821,9 @@
   "supervisor_instructions": [],
   "commit": "242efc03ad2b758ee506d3a6754fbcdd367634e4",
   "selected_source_sha256": "e2cbedde57c6352c8eef3baab84bb20b84fa199550e48213b8a5e3dd3369f461",
-  "supervisor_review": "Added boundary-safe difference probes in selected main code; exact full-trajectory replay passed."
+  "supervisor_review": "Selected code passed exact full-trajectory replay without new objective calls. Main adds reviewed swarm-summary and gradient-boundary fixes where applicable; original worker reports remain in their branch commits.",
+  "algorithm_parameters": {
+    "h": 0.01,
+    "step": 0.1
+  }
 }
