@@ -1,0 +1,9 @@
+{
+  "rationale": "The previous implementation failed because it did not guarantee exactly `budget` evaluations. The fix ensures that the loop runs until `len(X) == budget`, where `X` includes both shared and newly evaluated points. This guarantees exactly `budget` total evaluations, satisfying the constraint. The GP surrogate uses a Matern kernel with UCB acquisition, and the implementation remains within the 100-line limit.",
+  "ollama": {
+    "model": "qwen3.8:27b-mtp-q8_0",
+    "total_duration": 38057705208,
+    "prompt_eval_count": 1411,
+    "eval_count": 951
+  }
+}

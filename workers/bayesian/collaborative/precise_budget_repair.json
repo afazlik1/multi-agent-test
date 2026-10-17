@@ -1,0 +1,9 @@
+{
+  "response": {
+    "old": "while len(X) < budget:",
+    "new": "while len(X) < budget + len(shared):",
+    "rationale": "The existing code stops the loop when the total number of observations reaches 'budget'. However, since 'shared' observations are already available and cost zero new calls, the loop should continue until the total number of observations (existing + new) reaches 'budget + len(shared)'. This ensures that the optimization process utilizes the full budget of new evaluations by only stopping when the combined count of shared and newly evaluated points meets the target, preventing premature termination and the resulting 147 unnecessary new calls."
+  },
+  "model": "qwen3.8:27b-mtp-q8_0",
+  "eval_count": 140
+}
