@@ -10,7 +10,21 @@ import matplotlib.pyplot as plt
 def generate(root,history,objective):
     reports=root/'reports';plots=root/'visualizations'
     reports.mkdir(exist_ok=True);plots.mkdir(exist_ok=True)
+    import ast
+    settings={'length_scale','signal_var','noise_var','beta','n_candidates','min_init','n_init','h','step','n_particles','w','c1','c2','inertia','learning_rate','momentum'}
+    folders={'bayesian':'bayesian','gradient':'gradient','particle_swarm':'particle-swarm'}
     for result in history:
+        source=root.parent/'multi-agent-worktrees'/folders[result['worker']]/'workers'/result['worker']/result['phase']/'algorithm.py'
+        if not source.exists(): source=root/'workers'/result['worker']/result['phase']/'algorithm.py'
+        parameters={}
+        if source.exists():
+            for node in ast.walk(ast.parse(source.read_text())):
+                if isinstance(node,ast.Assign):
+                    for target in node.targets:
+                        if isinstance(target,ast.Name) and target.id in settings:
+                            try: parameters[target.id]=ast.literal_eval(node.value)
+                            except (ValueError,TypeError): pass
+        result['algorithm_parameters']=parameters
         for row in result['trajectory']:
             if abs(objective(row['x'],row['y'])-row['value'])>1e-9: raise RuntimeError('Independent validation failed')
     # Barrier-only metadata writes; evaluations remain exclusively owned by Ledger.
@@ -21,6 +35,7 @@ def generate(root,history,objective):
     for result in history:
         db.execute('INSERT OR REPLACE INTO runs VALUES (?,?,?,?,?,?)',('local-blackbox-001',result['worker'],result['phase'],branches[result['worker']],result['commit'],json.dumps(result)))
     db.commit();db.close()
+    (root/'experiments'/'experiment_history.json').write_text(json.dumps(history,indent=2))
     fields=['worker','phase','best_x','best_y','best_value','evaluations','runtime','commit']
     with (root/'experiments'/'aggregated_results.csv').open('w') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields,extrasaction='ignore');writer.writeheader();writer.writerows(history)
@@ -36,7 +51,7 @@ def generate(root,history,objective):
             coll=rows[1];text+=f"- {name}: independent {ind['best_value']:.8f}; collaboration phase {coll['best_value']:.8f}; retained-best improvement {max(0,coll['best_value']-ind['best_value']):.8f}. Total 300 evaluations.\n"
     text+='\n## Supervisor observations\n\nIndependent findings were withheld until all three workers completed and pushed. The supervisor then shared measured best candidates, recommending local refinement for gradient ascent, surrogate candidate enrichment for Bayesian optimization, and partial swarm initialization near promising points. Workers authored a revised implementation through local Ollama for the collaborative phase.\n\n'
     for r in history:
-        text+=f"### {r['worker']} / {r['phase']}\n\nCommit: `{r['commit']}`. Parameters and worker observations:\n\n```json\n{json.dumps(r['details'],indent=2)}\n```\n\n"
+        text+=f"### {r['worker']} / {r['phase']}\n\nCommit: `{r['commit']}`. Parameters and worker observations:\n\n```json\n{json.dumps({'algorithm_parameters':r.get('algorithm_parameters',{}),'raw_worker_notes':r['details']},indent=2)}\n```\n\n"
     text+='## Evaluation efficiency and retained final performance\n\n'
     text+='| Method | Retained best | Total calls | Optimization seconds | First call >= 15 | First call >= 19 |\n|---|---:|---:|---:|---:|---:|\n'
     for name in sorted({r['worker'] for r in history}):

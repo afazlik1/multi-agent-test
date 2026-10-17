@@ -37,7 +37,7 @@ def main():
             wt=worktrees/folder;directory=wt/'workers'/worker/phase;directory.mkdir(parents=True,exist_ok=True)
             result_path=directory/'result.json'
             if result_path.exists():
-                result=json.loads(result_path.read_text());result['commit']=publish(wt,branch,['workers/'+worker],phase+' '+worker+' results');history.append(result);continue
+                result=json.loads(result_path.read_text());publish(wt,branch,['workers/'+worker+'/'+phase],phase+' '+worker+' results');result['commit']=git(wt,'log','-1','--format=%H','--','workers/'+worker+'/'+phase+'/result.json');history.append(result);continue
             algorithm=directory/'algorithm.py'
             if not algorithm.exists():
                 previous=(wt/'workers'/worker/'independent'/'algorithm.py').read_text() if phase=='collaborative' else None
@@ -75,7 +75,7 @@ def main():
                 atomic(directory/'repair.json',{'rationale':answer['rationale'],'ollama':metadata})
                 result=execute(wt,directory,ledger,worker,phase,shared)
             atomic(directory/'result.json',result)
-            result['commit']=publish(wt,branch,['workers/'+worker],phase+' '+worker+' implementation and measured results')
+            result['commit']=publish(wt,branch,['workers/'+worker+'/'+phase],phase+' '+worker+' implementation and measured results')
             print('Published',worker,phase,result['best_value'],result['commit'],flush=True)
             return result
         with ThreadPoolExecutor(max_workers=3) as pool:

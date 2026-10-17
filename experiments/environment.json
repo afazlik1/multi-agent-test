@@ -1,0 +1,11 @@
+{
+  "python": "3.9.6",
+  "numpy": "2.0.2",
+  "matplotlib": "3.9.4",
+  "ollama_model": "qwen3.8:27b-mtp-q8_0",
+  "ollama_model_id_at_inspection": "8a1582877303",
+  "baseline_commit": "09aa906",
+  "additional_paid_api_activated": false,
+  "model_authoring_concurrency": 1,
+  "optimization_concurrency": 3
+}
